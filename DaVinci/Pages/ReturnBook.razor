@@ -183,11 +183,16 @@
     public string Patron { get => _patron; set => _patron = value; }
     public string Sbook { get => _sBook; set => _sBook = value; }
 
-    public static int dayReturned =  int.Parse(DateTime.Now.ToString($"dd"));
-    public static int MonthReturned = int.Parse(DateTime.Now.ToString($"dd"));
-    public static int YearReturuned = int.Parse(DateTime.Now.ToString($"yyyy"));
 
-    public string CurrentDate = DateTime.Now.ToString($"{dayReturned}/MM/yyyy");
+
+    public string CurrentDate = DateTime.Now.ToString("dd/MM/yyyy");
+
+
+    //public static int dayReturned =  int.Parse(DateTime.Now.ToString($"dd"));
+    //public static int MonthReturned = int.Parse(DateTime.Now.ToString($"dd"));
+    //public static int YearReturuned = int.Parse(DateTime.Now.ToString($"yyyy"));
+
+
 
 
     /*  SETS THE RETURN BUTTON DEFAULT OFF UNTIL A RETURN LIST HAS A BOOK  TO RETURN    */
@@ -196,7 +201,17 @@
 
     //public void DateRet
 
-    
+
+    public void ReturnDueDate()
+    {
+
+        int currentDay = int.Parse(DateTime.Now.ToString($"dd"));
+        int currentDMonth = int.Parse(DateTime.Now.ToString($"MM"));
+        int currnetYear = int.Parse(DateTime.Now.ToString($"yyyy"));
+
+
+
+    }
 
 
     /* ADDS TO THE RETURN LIST */
