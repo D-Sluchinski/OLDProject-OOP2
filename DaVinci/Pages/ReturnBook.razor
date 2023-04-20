@@ -96,23 +96,16 @@
                     @* <option selected value="">Loading...</option>*@
                     @*should look up based on Patrons name and ID when logged in*@
                     @* BOOK-ID,TITLE,BORROWDATE, *@
-                    @*else{
+
+@*                    else{
                             @foreach (var b in LoanedBooks)
                             {
-                                <option value="@">@</option>
+                                <option>@BookISBN,@BookTitle,@LoanedDate</option>
                             }
                     }*@
 
-                    
-                    @*TEST DELETE LATER*@
-                    else {
-                        @* BOOK-ID,TITLE,BORROWDATE, *@
-                        @*should look up based on Patrons name and ID when logged in*@
-                        @*B001,To Kill a Mockingbird,9780061120084,Harper Lee,Fiction,10,10*@
-                        <option value="1">1,BOOKTITLE,13-04-2023</option>
-                        <option value="2">2,KOOB,13-03-2023</option>
-                        <option value="3">3,KOOB,22-03-2023</option>
-                        <option value="4">4,Harry,22-03-2023</option>
+                    else{
+                        <option>141904199,Hunge Games,14-04-2023</option>
                     }
                 </select>
             </div>
@@ -133,6 +126,7 @@
             </div>
             <div class="row">
                 <div class="col" id="returningBooks">
+                    @*POPULATES ON *@
                 @*
                 @foreach ()
                 {
@@ -146,7 +140,7 @@
         <div class="row date">
             <div class="col align-self-end confirm">
                 <label>Date of Return: </label>
-                <label>@CurrentDate; @*RETURN*@</label>
+                <label>@CurrentDate</label> @*CURRENT DATE*@
             </div>
         </div>
 
@@ -154,7 +148,7 @@
         <div class="row">
             <div class="col confirm">
                 @*  CHECKS IF YOU ARE LOGGED IN *@
-                @if (isReturnEndabled == true || Patron != "Guest")
+                @if (isReturnEndabled == true && Patron != "Guest")
                 {
                     <button type="submit" class="btn btn-primary confirm-btn" @onclick="isSuccessfulReturn">
                         Return Book
@@ -172,37 +166,90 @@
     </div>
 </div>
 
+
 @code {
     ReturnBooksManagment RBM = new ReturnBooksManagment(); //RBM = Return Book List
 
     //List<ReturnBooksManagment> RBList = ReturnBooksManagment.GetList();
 
-    private string _patron = "x"; // Default is Guest until logged in
-    private string _sBook;
+    private string _patron = "Guest"; // Default is Guest until logged in
 
     public string Patron { get => _patron; set => _patron = value; }
-    public string Sbook { get => _sBook; set => _sBook = value; }
 
-    public static int dayReturned =  int.Parse(DateTime.Now.ToString($"dd"));
-    public static int MonthReturned = int.Parse(DateTime.Now.ToString($"dd"));
-    public static int YearReturuned = int.Parse(DateTime.Now.ToString($"yyyy"));
-
-    public string CurrentDate = DateTime.Now.ToString($"{dayReturned}/MM/yyyy");
+    public string CurrentDate = DateTime.Now.ToString("dd/MM/yyyy");
 
 
     /*  SETS THE RETURN BUTTON DEFAULT OFF UNTIL A RETURN LIST HAS A BOOK  TO RETURN    */
     public bool isReturnEndabled = false;
 
 
-    //public void DateReturne
+    public void DateReturnDue()
+    {
 
-    
+        int dayCurrent = int.Parse(DateTime.Now.ToString($"dd"));
+        int monthCurrent = int.Parse(DateTime.Now.ToString($"dd"));
+        int yearCurrent = int.Parse(DateTime.Now.ToString($"yyyy"));
+
+
+        // 7 days to return
+
+        //28 days
+        // Feb(2)
+
+        if (dayCurrent > 21)
+        {
+
+        }
+
+
+        //30 days
+        //April(4), June(6), Sept(9), Nov(11)
+
+        else if (dayCurrent > 23)
+        {
+
+        }
+
+
+        //31 days
+        //Jan(1), March(3),May(5), July(7), August(8), Oct(10),Dec (12)
+
+
+        else if (dayCurrent > 24)
+        {
+
+        }
+
+
+        else
+        {
+
+        }
+
+
+
+    }
+
+
+    /*  POPULATE THE RETURNABLE BOOKS*/
+    public void AddBorrowedBooks(ChangeEventArgs e)
+    {
+        string[] part = e.Value.ToString().Split(",");
+
+         //= part[0];
+         //= part[1];
+         //= part[2];
+         //= part[3];
+    }
 
 
     /* ADDS TO THE RETURN LIST */
     public void AddList()
     {
+
         GuestWarning();
+
+
 
     }
 
