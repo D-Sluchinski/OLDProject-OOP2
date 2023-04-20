@@ -1,27 +1,15 @@
 ﻿@page "/borrow"
 <h3>Checkout Book</h3>
 
-<p class="input">Enter the following:</p>
-<div class="IDBorrow">
-    <input class="form-control" type="text" id="bookID" placeholder="Book ID">
-    <input class="form-control" type="text" id="customerID" placeholder="Customer ID">
-</div>
+<p>Confirm book selection</p>
+<li>
+    <!--DISPLAY THE LIST OF BOOKS HERE AND SELECT/DE-SELECT BOOKS AS NEEDED->
+    <!--WILL BE POPULATED USING THE BOOKS THEY SELECT FROM THE BOOKS PAGE-->
+</li>
 
-<p class="confirm">Confirm the information below:</p>
-<div class="fullNameBorrow">
-    <label for="fullName">Full Name</label>
-    <input class="form-control" type="text" id="fullName" placeholder="Full Name" readonly>
-</div>
+<input class="btn btn-primary center-button" type="submit" value="Checkout">
 
-<p class="password">Enter account password:</p>
-<form>
-    <div class="form-group col-md-6 passwordBorrow">
-        <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
-    </div>
-</form>
-
-<input class="btn btn-primary" type="submit" value="Checkout">
-
+<!--ON CLICK OF THE CHECKOUT BUTTON POP UP THE ALERT WITH THE CORRECT DATE-->
 @code {
 
 }
