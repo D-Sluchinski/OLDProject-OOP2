@@ -1,0 +1,10 @@
+To Kill a Mockingbird,9780061120084,Harper Lee,Fiction,10
+Pride and Prejudice,9780141439518,Jane Austen,Fiction,8,8
+The Great Gatsby,9780743273565,F. Scott Fitzgerald,Non-Fiction,12,12
+1984,9780451524935,George Orwell,Fiction,15,15
+The Catcher in the Rye,9780316769488,J.D. Salinger,Non-Fiction,5,5
+The Hobbit,9780547928227,J.R.R. Tolkien,Fiction,20,20
+The Da Vinci Code,9780307474278,Dan Brown,Fiction,18,18
+Crime and Punishment,9890939090232,Fyodor Dostoevsky, Non-Fiction,11,11
+Harry Potter and the Sorcerer's Stone,9780590353427,J.K. Rowling,Fiction,30,30
+The Last day of a Condemed Man,9780618517657,Victor Hugo,Fiction,22,22
