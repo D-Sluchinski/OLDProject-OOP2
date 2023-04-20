@@ -1,0 +1,95 @@
+﻿@using DaVinci.Data;
+@page "/book"
+
+<h1 style="text-align:left"><b>Book library</b></h1>
+<br />
+<br />
+
+<!--SEARCH SECTION-->
+<div style="display: flex; align-items: center; gap: 10px;">
+    <label style="font-size:larger"><b>Search for the book here:</b></label>
+    <input type="text" aria-label="userinput" class="form-control" style="width: 350px" @bind="userSearchInput" />
+    <button class="btn btn-primary" @onclick="BookFinder">Search</button>
+</div>
+<br />
+<br />
+
+<!--SELECTION SECTION-->
+<div style="display:flex; align-items:center; gap:10px;">
+    <!--GENRE-->
+
+    <select @bind="selectedGenre">
+        <option>Select a genre:  </option>
+        <option value="any">Any</option>
+        @*@foreach (var genre in booksList)
+            {
+                <option value="@genre.Category">@genre.Category</option>
+            }*@
+        <option value="Fiction">Fiction</option>
+        <option value="Non-fiction">Non-Fiction</option>
+    </select>
+
+
+    <!--AUTHOR-->
+
+    <select @bind="selectedAuthor">
+        <option>Select an Author:</option>
+        <option value="any">Any</option>
+        @foreach (var authors in authorList)
+        {
+            <option value="@authors.AuthorName">@authors.AuthorName</option>
+        }
+    </select>
+
+
+    <!--LANGUAGE-->
+
+    <select @bind="selectedLanguage">
+        <option>Select a Language:</option>
+        <option value="Any">Any</option>
+        <option value="English">English</option>
+        <option value="Spanish">Spanish</option>
+        <option value="Irish">Irish</option>
+        <option value="German">German</option>
+        <option value="Russian">Russian</option>
+        <option value="French">French</option>
+    </select>
+</div>
+<br />
+<br />
+
+<!--SHOWING RESULTS-->
+@if (!string.IsNullOrEmpty(userSearchInput))
+{
+    <label>Showing search results for <i>"@userSearchInput"</i></label>
+    @if (matchingBooks != null && matchingBooks.Count > 0)
+    {
+        <select @bind="selectedBook">
+            <option>Select a book:</option>
+            @foreach (var book in matchingBooks)
+            {
+                <option value="@book.BookId">@book.Title by @book.AuthorName</option>
+            }
+        </select>
+    }
+}
+
+@code {
+
+    private string selectedGenre;
+    private string selectedAuthor;
+    private string selectedLanguage;
+    private string userSearchInput;
+    private Book selectedBook;
+
+    PopulateListManager lm = new PopulateListManager();
+    List<Book> booksList = PopulateListManager.GetBookDetails();
+    List<Author> authorList = PopulateListManager.GetAuthorDetails();
+
+    private List<Book> matchingBooks;
+    private void BookFinder()
+    {
+        matchingBooks = BookManager.FindMatchingBooks(userSearchInput, selectedGenre, selectedAuthor, selectedLanguage);
+    }
+}
+

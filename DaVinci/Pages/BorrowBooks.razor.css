@@ -1,0 +1,18 @@
+﻿body {
+    width: auto;
+    color: rgb(255, 243, 230);
+}
+
+.IDBorrow {
+    display: flex;
+}
+
+.input,
+.confirm,
+.password {
+    text-align: center;
+}
+
+.passwordBorrow {
+    text-align: center;
+}

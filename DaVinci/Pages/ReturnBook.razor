@@ -1,0 +1,267 @@
+﻿@page "/return"
+@using DaVinci.Data;
+@*
+	This section allows users to return the books they borrowed. 
+	The user can select the book they want to return from the list of 
+	borrowed books and click the return button. Once the book is returned, 
+	it gets added back to the original list of books, and a thank you message is displayed. 
+	The users cannot click the return button until they have selected a book.
+*@
+
+@if(Patron == "Guest")
+{
+    @*Displays if not logged in on load of page*@
+    GuestWarning(); 
+}
+
+@* HEADING *@
+<div class="PageWidth">
+    <div class="row">
+        <div class="col">
+            <h3>Return Books</h3>
+        </div>
+        <div class="col" id="PatronName">
+            <h3>@Patron</h3>
+         </div>
+    </div>
+</div>
+
+@*PAGE CONTENT*@
+<div class="PageContent PageWidth">
+    <div class="container text-center return">
+    @* SEARCH FOR RETURNABLE BOOKS *@
+      <div class="row">
+        <div class="col" id="searchName">
+                <label>Search by Book Title</label>
+        </div>
+        <div class="col" id="searchID">
+                <label>Search by Book ID</label>
+        </div>
+        <div class="col" id="SearchDateBorrowed">
+                <label>Search by Date</label>
+        </div>
+      </div>
+      @* SEARCH FUNCTIONS *@
+        @if (Patron == "Guest")
+        {
+            <div class="row">
+                @*GUEST VIEW*@
+                <div class="col">
+                    <textarea readonly placeholder="Book Title" class="text-lg-center searchText" id="searchNameTextbox"></textarea>
+                </div>
+                <div class="col">
+                    <textarea readonly placeholder="Book isbn" class="text-lg-center searchText" id="searchIDTextbox"></textarea>
+                </div>
+                <div class="col">
+                    <textarea readonly placeholder="dd/MM/yyyy" class="text-lg-center searchText" id="searchDateTextbox" ></textarea>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                @*SEARCH BY BOOK TITLE*@
+                <div class="col">
+                    <textarea placeholder="Book Title" class="text-lg-center searchText" id="searchNameTextbox"></textarea>
+                </div>
+                @*SEARCH BY BOOK ID*@
+                <div class="col">
+                    <textarea placeholder="Book ID" class="text-lg-center searchText" id="searchIDTextbox"></textarea>
+                </div>
+                @*SEARCH BY DATE*@
+                <div class="col">
+                    <textarea placeholder="dd/MM/yyyy" class="text-lg-center searchText" id="searchDateTextbox"></textarea>
+                </div>
+            </div>
+        }
+
+
+        @* SELECT RETURNING BOOKS *@
+        <div class="row">
+            <div class="col" id="returnableBooksTitle">
+                <label>Returnable books</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <select class="form-select borrowedBooks">
+                    @* @onchange="*@
+                    @*IF NOT LOGGED IN SHOW NOTHING*@
+                    @if(Patron == "Guest")
+                    {
+                        <option>Please Log in to view</option>
+                    }
+                    
+                    @*  DISPLAYS LIST IF LOGGED IN   *@
+                    @* <option selected value="">Loading...</option>*@
+                    @*should look up based on Patrons name and ID when logged in*@
+                    @* BOOK-ID,TITLE,BORROWDATE, *@
+                    @*else{
+                            @foreach (var b in LoanedBooks)
+                            {
+                                <option value="@">@</option>
+                            }
+                    }*@
+
+                    
+                    @*TEST DELETE LATER*@
+                    else {
+                        @* BOOK-ID,TITLE,BORROWDATE, *@
+                        @*should look up based on Patrons name and ID when logged in*@
+                        @*B001,To Kill a Mockingbird,9780061120084,Harper Lee,Fiction,10,10*@
+                        <option value="1">1,BOOKTITLE,13-04-2023</option>
+                        <option value="2">2,KOOB,13-03-2023</option>
+                        <option value="3">3,KOOB,22-03-2023</option>
+                        <option value="4">4,Harry,22-03-2023</option>
+                    }
+                </select>
+            </div>
+            @*ADD REMOVE OPTION*@
+            <div class="col">
+                <button type="button" class="btn btn-success btn-select add-remove" @onclick="AddList">Add</button>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-danger btn-select add-remove" @onclick="RemoveList">Remove</button>
+            </div>
+        </div>
+
+        @* RETURNING BOOKS LIST *@
+            <div class="row">
+                <div class="col" id="returningBooksTitle">
+                    <label>books returning:</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col" id="returningBooks">
+                @*
+                @foreach ()
+                {
+                
+                }*@
+                </div>
+            </div>
+
+
+        @*  CURRENT DATE    *@
+        <div class="row date">
+            <div class="col align-self-end confirm">
+                <label>Date of Return: </label>
+                <label>@CurrentDate; @*RETURN*@</label>
+            </div>
+        </div>
+
+        @*  RETURN BOOKS BUTTONS*@
+        <div class="row">
+            <div class="col confirm">
+                @*  CHECKS IF YOU ARE LOGGED IN *@
+                @if (isReturnEndabled == true || Patron != "Guest")
+                {
+                    <button type="submit" class="btn btn-primary confirm-btn" @onclick="isSuccessfulReturn">
+                        Return Book
+                    </button>
+                }
+                @*  DISABLED BUTTON   *@
+                else
+                {
+                    <button type="submit" class="btn btn-primary confirm-btn" disabled>
+                        Return Book
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    ReturnBooksManagment RBM = new ReturnBooksManagment(); //RBM = Return Book List
+
+    //List<ReturnBooksManagment> RBList = ReturnBooksManagment.GetList();
+
+    private string _patron = "x"; // Default is Guest until logged in
+    private string _sBook;
+
+    public string Patron { get => _patron; set => _patron = value; }
+    public string Sbook { get => _sBook; set => _sBook = value; }
+
+    public static int dayReturned =  int.Parse(DateTime.Now.ToString($"dd"));
+    public static int MonthReturned = int.Parse(DateTime.Now.ToString($"dd"));
+    public static int YearReturuned = int.Parse(DateTime.Now.ToString($"yyyy"));
+
+    public string CurrentDate = DateTime.Now.ToString($"{dayReturned}/MM/yyyy");
+
+
+    /*  SETS THE RETURN BUTTON DEFAULT OFF UNTIL A RETURN LIST HAS A BOOK  TO RETURN    */
+    public bool isReturnEndabled = false;
+
+
+    //public void DateRet
+
+    
+
+
+    /* ADDS TO THE RETURN LIST */
+    public void AddList()
+    {
+        GuestWarning();
+
+    }
+
+    /* REMOVES FROM THE RETURN LIST */
+    public void RemoveList()
+    {
+        App.Current.MainPage.DisplayAlert("TEST ALERT", $"Removed from the return list", "OK");
+    }
+
+
+
+
+    /*  DISPLAYS ALERT RETURN  */
+    public void isSuccessfulReturn()
+    {
+        GuestWarning();
+
+        //if ()
+        //{
+        App.Current.MainPage.DisplayAlert("Thank you", $"Book('s) have been returned", "OK");
+
+        IncreaseBookIssued();
+
+
+
+        //}
+        //else
+        //{
+
+        /*      EXCEPTION HANDLING     */
+
+        // string problemReturn = "no books are selected";
+        //if()
+        //{
+        //    problemReturn = "please fill in the checks to return the book";
+        //}
+
+        //App.Current.MainPage.DisplayAlert("Could not return $"{problemReturn}", "OK");
+        //}
+    }
+
+
+    /*  INCREASES THE BOOK COUNT OF EACH BOOK ADDED BACK    */
+    public void IncreaseBookIssued() //change to INT
+    {
+        GuestWarning();
+        //return i;
+    }
+
+
+
+    public void GuestWarning()
+    {
+        if (Patron == "Guest")
+        {
+            App.Current.MainPage.DisplayAlert("LOGGED INTO GUEST", $"please log into to return books", "Back");
+
+        }
+    }
+
+}
+
